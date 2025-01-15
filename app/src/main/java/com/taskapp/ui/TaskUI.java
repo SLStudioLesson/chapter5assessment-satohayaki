@@ -242,6 +242,9 @@ public class TaskUI {
                     throw new AppException("ステータスは、前のステータスより1つ先のもののみを選択してください");
                 }
                 taskLogic.changeStatus(taskCode, selectNumber, loginUser);
+                Log log = new Log(taskCode, loginUser.getCode(), selectNumber, LocalDate.now());
+                LogDataAccess logDataAccess = new LogDataAccess();
+                logDataAccess.save(log);
                 System.out.println("ステータスの変更が完了しました。");
                 flg = false;
             } catch (IOException e) {

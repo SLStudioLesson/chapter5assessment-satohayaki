@@ -1,14 +1,11 @@
 package com.taskapp.logic;
 
-import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
 
 import com.taskapp.dataaccess.LogDataAccess;
 import com.taskapp.dataaccess.TaskDataAccess;
 import com.taskapp.dataaccess.UserDataAccess;
 import com.taskapp.exception.AppException;
-import com.taskapp.model.Log;
 import com.taskapp.model.Task;
 import com.taskapp.model.User;
 

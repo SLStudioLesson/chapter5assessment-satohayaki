@@ -30,6 +30,7 @@ public class UserLogic {
      */
     public User login(String email, String password) throws AppException {
         User user = userDataAccess.findByEmailAndPassword(email, password);
+        //↑の返り値がnullの条件分岐
         if(user == null) {
             throw new AppException("既に登録されているメールアドレス、パスワードを入力してください");
         }

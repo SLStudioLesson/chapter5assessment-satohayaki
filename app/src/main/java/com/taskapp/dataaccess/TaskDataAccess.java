@@ -39,25 +39,32 @@ public class TaskDataAccess {
      * @return タスクのリスト
      */
     public List<Task> findAll() {
+        //空のTaskリストを用意
         List<Task> tasks = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
+            //ヘッダーを読み飛ばす
             reader.readLine();
             while ((line = reader.readLine()) != null) {
+                //読み込んだ一行の内容を,で分けた配列に
                 String[] values = line.split(",");
+                //配列valuesが期待された形でなければ、ループの最初に戻る。
                 if(values.length != 4) continue;
                 int code = Integer.parseInt(values[0]);
                 String name = values[1];
                 int status = Integer.parseInt(values[2]);
                 int userCode = Integer.parseInt(values[3]);
-
+                //コードの情報だけを持ったuserを作成
                 User user = new User(userCode, null, null, null);
+                //taskを生成
                 Task task = new Task(code, name, status, user);
+                //tasksにtaskを追加する
                 tasks.add(task);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //tasksを返す。
         return tasks;
     }
 
