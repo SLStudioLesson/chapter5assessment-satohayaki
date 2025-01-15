@@ -94,9 +94,12 @@ public class TaskLogic {
      * @param loginUser ログインユーザー
      * @throws AppException タスクコードが存在しない、またはステータスが前のステータスより1つ先でない場合にスローされます
      */
-    // public void changeStatus(int code, int status,
-    //                         User loginUser) throws AppException {
-    // }
+    public void changeStatus(int code, int status,
+                            User loginUser) throws AppException {
+        Task task = taskDataAccess.findByCode(code);
+        task.setStatus(status);
+        taskDataAccess.update(task);
+    }
 
     /**
      * タスクを削除します。

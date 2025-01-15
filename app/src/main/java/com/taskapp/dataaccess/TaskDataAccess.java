@@ -45,6 +45,7 @@ public class TaskDataAccess {
             reader.readLine();
             while ((line = reader.readLine()) != null) {
                 String[] values = line.split(",");
+                if(values.length != 4) continue;
                 int code = Integer.parseInt(values[0]);
                 String name = values[1];
                 int status = Integer.parseInt(values[2]);
@@ -88,14 +89,17 @@ public class TaskDataAccess {
                 String[] values = line.split(",");
                 int taskCode = Integer.parseInt(values[0]);
                 if(taskCode != code) continue;
+                String name = values[1];
+                int status = Integer.parseInt(values[2]);
+                int rep_User_code = Integer.parseInt(values[3]);
+                User repUser = new User(rep_User_code, null, null, null);
 
-                
-                
+                task = new Task(taskCode, name, status, repUser);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return task;
     }
 
     /**
@@ -105,7 +109,7 @@ public class TaskDataAccess {
     public void update(Task updateTask) {
         List<Task> tasks = findAll();
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-            writer.write("Code,Name,Status,Rep_User_Code");
+            writer.write("Code,Name,Status,Rep_User_Code\n");
             String line;
             for(Task task : tasks) {
                 if(task.getCode() == updateTask.getCode()) {
