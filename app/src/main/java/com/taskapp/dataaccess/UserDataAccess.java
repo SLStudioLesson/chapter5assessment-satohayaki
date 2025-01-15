@@ -1,5 +1,10 @@
 package com.taskapp.dataaccess;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import com.taskapp.model.User;
+
 public class UserDataAccess {
     private final String filePath;
 
@@ -11,9 +16,9 @@ public class UserDataAccess {
      * 自動採点用に必要なコンストラクタのため、皆さんはこのコンストラクタを利用・削除はしないでください
      * @param filePath
      */
-    public UserDataAccess(String filePath) {
-        this.filePath = filePath;
-    }
+    // public UserDataAccess(String filePath) {
+    //     this.filePath = filePath;
+    // }
 
     /**
      * メールアドレスとパスワードを基にユーザーデータを探します。
@@ -21,26 +26,54 @@ public class UserDataAccess {
      * @param password パスワード
      * @return 見つかったユーザー
      */
-    // public User findByEmailAndPassword(String email, String password) {
-    //     try () {
+    public User findByEmailAndPassword(String email, String password) {
+        User user = null;
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            //タイトルを読み飛ばす
+            reader.readLine();
+            while ((line = reader.readLine()) != null) {
+                String[] values = line.split(",");
+                //引数のemailとpasswordが読み込んだ内容と一致しなければ最初に戻る
+                if(!(values[2].equals(email) && values[3].equals(password))) continue;
+                int code = Integer.parseInt(values[0]);
+                String name = values[1];
+                String userEmail = values[2];
+                String userPassword = values[3];
 
-    //     } catch (IOException e) {
-    //         e.printStackTrace();;
-    //     }
-    //     return null;
-    // }
+                user = new User(code, name, userEmail, userPassword);
+                
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();;
+        }
+        return user;
+    }
 
     /**
      * コードを基にユーザーデータを取得します。
      * @param code 取得するユーザーのコード
      * @return 見つかったユーザー
      */
-    // public User findByCode(int code) {
-    //     try () {
-
-    //     } catch (IOException e) {
-    //         e.printStackTrace();
-    //     }
-    //     return null;
-    // }
+    public User findByCode(int code) {
+        User user = null;
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            //タイトルを読み飛ばす
+            reader.readLine();
+            while ((line = reader.readLine()) != null) {
+                String[] values = line.split(",");
+                int userCode = Integer.parseInt(values[0]);
+                if(code != userCode) continue;
+                String name = values[1];
+                String email = values[2];
+                String password = values[3];
+                user = new User(userCode, name, email, password);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
 }
